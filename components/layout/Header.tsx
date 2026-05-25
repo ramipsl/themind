@@ -152,6 +152,11 @@ export default function Header() {
                 <li key={link.labelKey}>
                   <a
                     href={link.href}
+                    onClick={
+                      link.href === "/" && isHome
+                        ? (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+                        : undefined
+                    }
                     className={[
                       `relative group font-body text-sm transition-colors duration-300 ${lang === "ar" ? "" : "tracking-wide"} pb-1 inline-block`,
                       isActive ? "text-ink" : "text-ink-muted hover:text-ink",
@@ -292,7 +297,13 @@ export default function Header() {
                 <li key={link.labelKey}>
                   <a
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => {
+                      if (link.href === "/" && isHome) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                      setMenuOpen(false);
+                    }}
                     className="font-body text-lg font-medium text-ink hover:text-ink-muted transition-colors"
                   >
                     {t(link.labelKey)}
