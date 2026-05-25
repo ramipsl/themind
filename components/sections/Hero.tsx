@@ -22,7 +22,11 @@ export default function Hero({ id }: { id?: string } = {}) {
       id={id}
       style={{
         paddingTop: "calc(5rem + env(safe-area-inset-top, 0px))",
-        backgroundImage: "url('/The Mind Interior.jpeg')",
+        // image-set() serves AVIF (392 KB) to every modern browser and falls
+        // back to the 2560-px JPEG (1.3 MB) for the rare non-AVIF case.
+        // The AVIF is preloaded in layout.tsx so it arrives before first paint.
+        backgroundImage:
+          "image-set(url('/hero-bg.avif') type('image/avif'), url('/hero-bg.jpg') type('image/jpeg'))",
       }}
       className="relative min-h-screen flex flex-col items-center justify-center px-6 pb-14 overflow-hidden bg-cover bg-no-repeat bg-top md:bg-center"
     >

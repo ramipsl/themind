@@ -66,11 +66,14 @@ export default function RootLayout({
         {/* Preload hero logo so it is available before first paint,
             preventing a blank/flash frame in the hero section. */}
         <link rel="preload" as="image" href="/logo-dark-transparent.png" />
-        {/* Preload hero background globally so the image is always cached,
-            regardless of which route is currently active. This prevents the
-            appear→disappear→appear flicker that occurs when Next.js Image's
-            internal onLoad state resets during SPA navigation or re-renders. */}
-        <link rel="preload" as="image" href="/The Mind Interior.jpeg" />
+        {/* Preload optimised hero background (AVIF, 392 KB vs 8.1 MB original).
+            type="image/avif" lets AVIF-capable browsers (all modern ones) start
+            fetching immediately; non-AVIF browsers ignore this hint and fall back
+            to the JPEG served via image-set() in Hero.tsx.
+            The link lives in the root layout so it fires on every route, not just
+            when the Hero component mounts — this keeps the image hot across
+            client-side navigations and prevents the SPA-navigation flicker. */}
+        <link rel="preload" as="image" href="/hero-bg.avif" type="image/avif" />
       </head>
       <body className={`${fontPrimary.variable} ${fontAuxiliary.variable} ${fontArabic.variable}`}>
         <LanguageProvider>
