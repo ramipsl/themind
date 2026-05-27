@@ -66,14 +66,13 @@ export default function RootLayout({
         {/* Preload hero logo so it is available before first paint,
             preventing a blank/flash frame in the hero section. */}
         <link rel="preload" as="image" href="/logo-dark-transparent.png" />
-        {/* Preload optimised hero background (AVIF, 392 KB vs 8.1 MB original).
-            type="image/avif" lets AVIF-capable browsers (all modern ones) start
-            fetching immediately; non-AVIF browsers ignore this hint and fall back
-            to the JPEG served via image-set() in Hero.tsx.
-            The link lives in the root layout so it fires on every route, not just
-            when the Hero component mounts — this keeps the image hot across
-            client-side navigations and prevents the SPA-navigation flicker. */}
-        <link rel="preload" as="image" href="/hero-bg.avif" type="image/avif" />
+        {/* Preload the hero background JPEG (1.3 MB, 2560 px wide).
+            Plain JPEG is used in Hero.tsx because image-set() with type()
+            descriptors is silently dropped by Samsung Internet and older
+            Android Chrome, leaving no background image at all.
+            The link lives in the root layout so it fires on every route,
+            keeping the image warm across client-side navigations. */}
+        <link rel="preload" as="image" href="/hero-bg.jpg" />
       </head>
       <body className={`${fontPrimary.variable} ${fontAuxiliary.variable} ${fontArabic.variable}`}>
         <LanguageProvider>
